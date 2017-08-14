@@ -1,0 +1,23 @@
+package pb;
+
+//首次登陆，客户端启动时请求
+message loginRequest
+{
+    required string deviceId = 1; //设备码
+
+    required int32 thirdAccountType = 3;
+    required string thirdAccount = 4;
+    required string thirdPasswd = 5;
+
+    required int32 pfType = 6; //渠道类型
+    required string version = 7;
+}
+
+message loginResponse
+{
+    required int32 errorCode = 1;
+    required string ip = 2;
+    required int32 port = 3;
+    required string authCode = 4; //认证码，用于登陆其它服务器
+    required int64 accountId = 5; //服务器分配的玩家帐号
+}
