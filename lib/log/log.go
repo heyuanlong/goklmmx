@@ -1,30 +1,33 @@
 package log
 
 import (
-	"fmt"
 	"os"
 	syslog "log"
+	kconf "goklmmx/lib/conf"
 )
 
-var klog *syslog.Logger
+var Klog *syslog.Logger
 
 func init() {
-	klog = syslog.New(os.Stdout,"",syslog.LstdFlags | syslog.Lshortfile )
+	Klog = syslog.New(os.Stdout,"",syslog.LstdFlags | syslog.Lshortfile )
 }
 
-func SetLogfile(f string ) error  {
-	if f != ""{
-		logFile,err  := os.Create(f)
+func SetLogfile( ) error  {
+	var logfile string
+
+	c, _ := kconf.GetConf()
+	daemon,_ := c.Bool("server","daemon")
+	if daemon == true{
+		logfile,_ = c.String("server","logfile")
+	}
+
+	if logfile != ""{
+		logFile,err  := os.Create(logfile)
 		if err != nil {
 			syslog.Fatalln("open file error")
 		}
-		klog = syslog.New(logFile,"",syslog.LstdFlags | syslog.Lshortfile )
+		Klog = syslog.New(logFile,"",syslog.LstdFlags | syslog.Lshortfile )
 	}
 
 	return nil
-}
-
-func  Common(infmt string, args ...interface{}) {
-	fmts := fmt.Sprintf(infmt,args...)
-	klog.Println(fmts)
 }

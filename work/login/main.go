@@ -1,19 +1,32 @@
 package main
 
 import (
+	"net"
 
 	klog "goklmmx/lib/log"
 	kconf "goklmmx/lib/conf"
+	kredis "goklmmx/lib/db/redis"
 )
 
 
 func main() {
 	kconf.SetFile("conf/config.cfg")
+	klog.SetLogfile()
+	kredis.RedisInit()
+
 	c, _ := kconf.GetConf()
-	logfile,_ := c.String("server","logfile")
-	klog.SetLogfile(logfile)
-
-
-
-	klog.Common("kkkkkkkkkkkkkkkkkkkkkk:%d",12)
+	serverPort,_ := c.String("server","port")
+	listen_sock,err := net.Listen("tcp",":"+serverPort)
+	if err != nil{
+		klog.Klog.Fatalln(err)
+	}
+	defer listen_sock.Close()
+	for{
+		new_conn,err := listen_sock.Accept()
+		if err != nil {
+			klog.Klog.Println("listen_sock.Accept error:",err)
+			continue
+		}
+		go HandleClient(new_conn)
+	}
 }
