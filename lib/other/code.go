@@ -2,7 +2,9 @@ package other
 
 
 
-const FD_TIMEOUT_SECOND					= int(5)
+const FD_TIMEOUT_SECOND_LOGIN				= int(5)
+const FD_TIMEOUT_SECOND_GAME				= int(60)
+
 
 
 
