@@ -1,0 +1,6 @@
+work/center/center.exe
+work/game/game.exe
+work/login/login.exe
+work/center/conf/*
+work/game/conf/*
+work/login/conf/*
