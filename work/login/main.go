@@ -6,6 +6,7 @@ import (
 	klog "goklmmx/lib/log"
 	kconf "goklmmx/lib/conf"
 	kredis "goklmmx/lib/db/redis"
+	kmysql "goklmmx/lib/db/mysql"
 )
 
 
@@ -13,6 +14,9 @@ func main() {
 	kconf.SetFile("conf/config.cfg")
 	klog.SetLogfile()
 	kredis.RedisInit()
+	kmysql.MysqlInit()
+
+	kmysql.Test()
 
 	c, _ := kconf.GetConf()
 	serverPort,_ := c.String("server","port")

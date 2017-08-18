@@ -1,4 +1,7 @@
 package pb
 
-var MSGTYPE map[string]int=map[string]int{
-	"LoginRequest":1112}
+const  MSGTYPE_LoginRequest =  int(10072)
+const  MSGTYPE_LoginResponse =  int(10073)
+
+
+
