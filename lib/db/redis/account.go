@@ -39,3 +39,14 @@ func SetAuth(accountId int ,value string) error  {
 	}
 	return nil
 }
+func GetAuth(accountId int) (string ,error) {
+	rc := RedisClient.Get()
+	defer rc.Close()
+
+	v, err := redis.String(rc.Do("GET", accountKey(accountId)))
+	if err !=nil {
+		klog.Klog.Println(err)
+		return "",err
+	}
+	return v, nil
+}

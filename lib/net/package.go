@@ -10,12 +10,12 @@ func ParsePackage(buf []byte) (msgLen int,msgType int,pBuf []byte) {
 	if zlen < 6{
 		return 0,0,nil
 	}
-	msgLen = int(kutils.BytesToUint16Big(buf[0:2]))
-	if zlen < (msgLen + 2) {
+	msgLen = int(kutils.BytesToUint16Big(buf[0:2])) + 2
+	if zlen < msgLen {
 		return 0,0,nil
 	}
 	msgType = kutils.BytesToIntLittle(buf[2:6])
-	pBuf = buf[6:(msgLen + 2)]
+	pBuf = buf[6:msgLen]
 	return
 }
 

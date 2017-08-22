@@ -28,7 +28,7 @@ func HandleClient(conn net.Conn)  {
 	var bufBuf = make([]byte,0)
 	var msgBuf = make([]byte, G_MSG_SIZE_MAX)
 	for  {
-		conn.SetReadDeadline(time.Now().Add(kother.FD_TIMEOUT_SECOND_LOGIN * time.Second))
+		conn.SetReadDeadline(time.Now().Add( time.Duration(kother.FD_TIMEOUT_SECOND_LOGIN) * time.Second))
 		n , err := conn.Read(msgBuf)
 		if err!= nil{
 			if nerr, ok := err.(*net.OpError); ok && nerr.Timeout() {

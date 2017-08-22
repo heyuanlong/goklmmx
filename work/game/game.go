@@ -1,19 +1,16 @@
 package main
 
 import (
-	"fmt"
+
 	"net"
 	"time"
 	"errors"
-	"github.com/golang/protobuf/proto"
+
 
 
 	klog "goklmmx/lib/log"
 	knet "goklmmx/lib/net"
 	kpb "goklmmx/lib/pb"
-	kmysql "goklmmx/lib/db/mysql"
-	kredis "goklmmx/lib/db/redis"
-	kutils "goklmmx/lib/utils"
 	kother "goklmmx/lib/other"
 )
 
@@ -25,11 +22,12 @@ const (
 func HandleClient(conn net.Conn)  {
 	klog.Klog.Println("HandleClient")
 	defer conn.Close()
+	agent := NewAgent(conn)
 
 	var bufBuf = make([]byte,0)
 	var msgBuf = make([]byte, G_MSG_SIZE_MAX)
 	for  {
-		conn.SetReadDeadline(time.Now().Add(kother.FD_TIMEOUT_SECOND_GAME* time.Second))
+		conn.SetReadDeadline(time.Now().Add(time.Duration(kother.FD_TIMEOUT_SECOND_GAME) * time.Second))
 		n , err := conn.Read(msgBuf)
 		if err!= nil{
 			if nerr, ok := err.(*net.OpError); ok && nerr.Timeout() {
@@ -49,13 +47,21 @@ func HandleClient(conn net.Conn)  {
 		if msgLen == 0 {
 			continue
 		}
-		sendBuf ,err := DealPackage(msgType,pBuf)
+
+		klog.Klog.Println("msgType:",msgType)
+		err = nil
+		if msgType == kpb.MSGTYPE_GameServerLoginRequest {
+			err = agent.DealPackage(msgType,pBuf)
+		}else{
+			if agent.IsLogin() == true{
+				err = agent.DealPackage(msgType,pBuf)
+			}else{
+				err = errors.New("Haven't login")
+			}
+		}
 		if err != nil{
 			klog.Klog.Println(err)
 			return
-		}else{
-			klog.Klog.Println("send len:",len(sendBuf))
-			conn.Write(sendBuf)
 		}
 		bufBuf = bufBuf[msgLen:]
 	}

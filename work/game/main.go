@@ -2,7 +2,6 @@ package main
 
 import (
 	"net"
-	"time"
 	klog "goklmmx/lib/log"
 	kconf "goklmmx/lib/conf"
 	kredis "goklmmx/lib/db/redis"

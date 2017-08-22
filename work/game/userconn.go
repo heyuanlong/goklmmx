@@ -3,7 +3,6 @@ package main
 import (
 	"net"
 	"sync"
-	"time"
 	"errors"
 )
 
@@ -23,7 +22,7 @@ func AddUserConnMap(id int , conn net.Conn) error  {
 }
 func DelUserConnMap(id int) error  {
 	rwm.Lock()
-	detele(userConnMap,id)
+	delete(userConnMap,id)
 	rwm.Unlock()
 	return nil
 }

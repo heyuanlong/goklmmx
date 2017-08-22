@@ -21,3 +21,18 @@ message loginResponse
     required string authCode = 4; //认证码，用于登陆其它服务器
     required int64 accountId = 5; //服务器分配的玩家帐号
 }
+
+
+//登陆游戏服务器
+message gameServerLoginRequest
+{
+    required int64 accountId = 1;
+    required string authCode = 2;
+    required int32 pfType = 3;
+    required string version = 4;
+}
+
+message gameServerLoginResponse
+{
+    required int32 errorCode = 1;
+}
