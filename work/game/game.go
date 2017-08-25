@@ -4,13 +4,10 @@ import (
 
 	"net"
 	"time"
-	"errors"
-
 
 
 	klog "goklmmx/lib/log"
 	knet "goklmmx/lib/net"
-	kpb "goklmmx/lib/pb"
 	kother "goklmmx/lib/other"
 )
 
@@ -50,15 +47,7 @@ func HandleClient(conn net.Conn)  {
 
 		klog.Klog.Println("msgType:",msgType)
 		err = nil
-		if msgType == kpb.MSGTYPE_GameServerLoginRequest {
-			err = agent.DealPackage(msgType,pBuf)
-		}else{
-			if agent.IsLogin() == true{
-				err = agent.DealPackage(msgType,pBuf)
-			}else{
-				err = errors.New("Haven't login")
-			}
-		}
+		err = agent.DealPackage(msgType,pBuf)
 		if err != nil{
 			klog.Klog.Println(err)
 			return

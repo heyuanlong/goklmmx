@@ -1,5 +1,8 @@
 package pb;
 
+
+
+
 //首次登陆，客户端启动时请求
 message loginRequest
 {
@@ -35,4 +38,59 @@ message gameServerLoginRequest
 message gameServerLoginResponse
 {
     required int32 errorCode = 1;
+}
+// 名字和头像同步
+message syncBaseInfoRequest
+{
+    required int32 headImage = 1;
+    required string nickname = 2;
+}
+
+message syncBaseInfoResponse
+{
+    required int32 errorCode = 1;
+}
+
+message pingRequest
+{
+    required int32 clientTime = 1;
+}
+
+message pingResponse
+{
+    required int32 errorCode = 1;
+    required int32 clientTime = 2;
+}
+
+
+// 获取请求体力的好友名单
+message getFriendListForStrengthRequesst
+{
+    required int32 placeholder = 1;
+}
+
+message getFriendListForStrengthResponse
+{
+    required int32 errorCode = 1;
+    repeated uint64 accountIds = 2; // 好友账号id
+}
+
+message sendGameResumeRequest
+{
+    required LogGameResume data = 1;
+}
+
+message sendGameResumeResponse
+{
+    required int32 errorCode = 1;
+}
+
+message LogGameResume
+{
+    required int32 logtime = 2; //日志时间
+    required string runtimeVersion = 3; //运行时版本
+    required string networkType = 4; //网络类型
+    required string deviceModel = 5; //设备型号
+    required int32 androidSdk = 6; //安卓sdk
+
 }

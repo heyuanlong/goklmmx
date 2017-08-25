@@ -11,4 +11,5 @@ echo "copy client .pb File to bin/pb"
 copy /Y ".\client2server.pb.go" "../../lib/pb/client2server.pb.go"
 
 
+
 pause
