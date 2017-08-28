@@ -1,4 +1,4 @@
-package main
+package agentManager
 
 import (
 	"net"
@@ -7,6 +7,7 @@ import (
 	kpb "goklmmx/lib/pb"
 	kaccount "goklmmx/work/game/common/account"
 	kservice "goklmmx/work/game/agent/service"
+	kbase "goklmmx/work/game/base"
 )
 
 type Agent struct {
@@ -46,6 +47,7 @@ func (agent *Agent) DealPackage(msgType int ,pBuf []byte) error {
 		return kservice.GetFriendListForStrengthRequesst(pBuf,agent.accout,agent.conn)
 	}
 	if kpb.MSGTYPE_SendGameResumeRequest == msgType {
+		kbase.Chan1 <- kbase.MsgChan{msgType,pBuf}
 		return kservice.SendGameResumeRequest(pBuf,agent.accout,agent.conn)
 	}
 	return nil

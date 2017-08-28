@@ -6,6 +6,8 @@ import (
 	kconf "goklmmx/lib/conf"
 	kredis "goklmmx/lib/db/redis"
 	kmysql "goklmmx/lib/db/mysql"
+	kagentManager "goklmmx/work/game/agentManager"
+	kdealChan1 "goklmmx/work/game/dealChan1"
 )
 
 
@@ -15,6 +17,7 @@ func main() {
 	kredis.RedisInit()
 	kmysql.MysqlInit()
 
+	go kdealChan1.Deal()
 
 	c, _ := kconf.GetConf()
 	serverPort,_ := c.String("server","port")
@@ -29,7 +32,7 @@ func main() {
 			klog.Klog.Println("listen_sock.Accept error:",err)
 			continue
 		}
-		go HandleClient(new_conn)
+		go kagentManager.HandleClient(new_conn)
 	}
 }
 /*
