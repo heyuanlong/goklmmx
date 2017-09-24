@@ -8,6 +8,7 @@ import (
 	kaccount "goklmmx/work/game/common/account"
 	kservice "goklmmx/work/game/agent/service"
 	kbase "goklmmx/work/game/base"
+	kmap "goklmmx/work/game/kmap"
 )
 
 type Agent struct {
@@ -30,6 +31,9 @@ func (agent *Agent) DealPackage(msgType int ,pBuf []byte) error {
 		err,isLogin := kservice.GameServerLoginRequest(pBuf,agent.accout,agent.conn)
 		if err == nil {
 			agent.isLogin = isLogin
+			if isLogin == true{
+				kmap.AddUserConnMap(agent.accout.AccountId,agent.conn)
+			}
 		}
 		return err
 	}

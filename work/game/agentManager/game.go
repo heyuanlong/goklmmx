@@ -9,6 +9,7 @@ import (
 	klog "goklmmx/lib/log"
 	knet "goklmmx/lib/net"
 	kother "goklmmx/lib/other"
+	kmap "goklmmx/work/game/kmap"
 )
 
 const (
@@ -20,6 +21,7 @@ func HandleClient(conn net.Conn)  {
 	klog.Klog.Println("HandleClient")
 	defer conn.Close()
 	agent := NewAgent(conn)
+	defer clean(agent)
 
 	var bufBuf = make([]byte,0)
 	var msgBuf = make([]byte, G_MSG_SIZE_MAX)
@@ -29,6 +31,7 @@ func HandleClient(conn net.Conn)  {
 		if err!= nil{
 			if nerr, ok := err.(*net.OpError); ok && nerr.Timeout() {
 				klog.Klog.Println("timeout")
+				
 				return
 			}else {
 				klog.Klog.Println("read close or fail")
@@ -53,5 +56,11 @@ func HandleClient(conn net.Conn)  {
 			return
 		}
 		bufBuf = bufBuf[msgLen:]
+	}
+}
+
+func clean(agent *Agent)  {
+	if agent.accout.AccountId != 0 {
+		kmap.DelUserConnMap(agent.accout.AccountId)
 	}
 }
