@@ -8,6 +8,7 @@ import (
 	kmysql "goklmmx/lib/db/mysql"
 	kagentManager "goklmmx/work/game/agentManager"
 	kdealChan1 "goklmmx/work/game/dealChan1"
+	callCenter "goklmmx/work/game/callCenter"
 )
 
 
@@ -16,6 +17,8 @@ func main() {
 	klog.SetLogfile()
 	kredis.RedisInit()
 	kmysql.MysqlInit()
+	callCenter.CallCenterInit()
+
 
 	go kdealChan1.Deal()
 

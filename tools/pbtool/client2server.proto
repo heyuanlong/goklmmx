@@ -1,7 +1,6 @@
+syntax = "proto2";
+
 package pb;
-
-
-
 
 //首次登陆，客户端启动时请求
 message loginRequest
